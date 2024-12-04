@@ -1,6 +1,6 @@
 export class Producto {
   // propiedades privaddas/publicas
-  #precio;
+  // #precio;
   //constructor
   constructor(nombre, cantidad, precio) {
     this.nombre = nombre;
