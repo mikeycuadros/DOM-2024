@@ -11,7 +11,7 @@ export default class Carrito {
   agregarProducto(nombre, cantidad, precio) {
     this.productos.push(new Producto(nombre, cantidad, precio));
     // lo guardamos tambien en el localStorage
-    this.guardarLocalStorage;
+    this.guardarLocalStorage();
   }
 
   /**
@@ -22,14 +22,14 @@ export default class Carrito {
   borrarProducto(index) {
     this.productos.splice(index, 1);
     // lo actualizo en el localStorage
-    this.guardarLocalStorage;
+    this.guardarLocalStorage();
   }
 
   editarProducto(index, newCantidad) {
     if (newCantidad > 0) {
       this.productos[index].cantidad = newCantidad;
       // actualizar el localStorage
-      this.guardarLocalStorage;
+      this.guardarLocalStorage();
     }
   }
 

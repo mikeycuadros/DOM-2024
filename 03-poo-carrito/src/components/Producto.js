@@ -5,19 +5,19 @@ export class Producto {
   constructor(nombre, cantidad, precio) {
     this.nombre = nombre;
     this.cantidad = cantidad;
-    this.#precio = precio;
+    this.precio = precio;
   }
   // metodos
   getPrecio() {
-    return this.#precio;
+    return this.precio;
   }
 
   setPrecio(newPrecio) {
-    this.#precio = newPrecio;
+    this.precio = newPrecio;
   }
 
   calcularTotal() {
-    return this.#precio * this.cantidad;
+    return this.precio * this.cantidad;
   }
 
   obtenerInfo() {

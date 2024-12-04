@@ -11,50 +11,58 @@ import Carrito from "./components/Carrito";
 
 const carrito = new Carrito();
 // cargamos los datos del localStorage al carrito.
-// carrito.cargarLocalStorage();
+carrito.cargarLocalStorage();
 
-function pintarInterfazWeb() {
-  const app = document.getElementById("app");
-  function pintarCarrito() {
-    const lista = document.getElementById("lista-productos");
-    lista.innerHTML = carrito.productos
-      .map(
-        (producto, index) => `
-      <li data-id="${index}"> ${producto.obtenerInfo()}
-      <button class="btn-editar" data-id="${index}">Editar</button>
-      <button class="btn-borrar" data-id="${index}">Borrar</button>
-    </li>`
-      )
-      .join("");
-    // calcular el total
-  }
-
-  const handlerSubmit = (event) => {
-    event.preventDefault();
-    const nombre = document.getElementById("nombre-producto").value.trim();
-    const cantidad = Number(document.querySelector("#cantidad-producto").value);
-    const precio = Number(document.querySelector("#precio-producto").value);
-    //validaciones del formulario basica
-    if (!nombre || cantidad < 0 || precio < 0) {
-      alert("Debes de introducir valores en el formulario");
-    }
+function pintarCarrito() {
+  const lista = document.getElementById("lista-productos");
+  lista.innerHTML = carrito.productos
+    .map(
+      (producto, index) => `
+    <li data-id="${index}"> ${producto.obtenerInfo()}
+    <button class="btn-editar" data-id="${index}">Editar</button>
+    <button class="btn-borrar" data-id="${index}">Borrar</button>
+  </li>`
+    )
+    .join("");
+  // calcular el total
+}
+const handlerSubmit = (event) => {
+  event.preventDefault();
+  const nombre = document.getElementById("nombre-producto").value.trim();
+  const cantidad = Number(document.querySelector("#cantidad-producto").value);
+  const precio = Number(document.querySelector("#precio-producto").value);
+  //validaciones del formulario basica
+  if (!nombre || cantidad < 0 || precio < 0) {
+    alert("Debes de introducir valores en el formulario");
+  } else {
     // añadimos el nombre, cantidad, precio a un producto del carrito
     carrito.agregarProducto(nombre, cantidad, precio);
     // ahora pintamos el carrito
     pintarCarrito();
-  };
-
-  const opcionesProducto = (event) => {
-    // target es el COMPONENTE donde he hecho CLICK o lo que sea
-    const indice = Number(event.target.dataset.id); // cuando pulso click obtengo el componente
-    if (event.target.classList.contains("btn-borrar")) {
-      carrito.borrarProducto(indice);
+    // limpiamos los campos del formulario
+    event.target.reset();
+  }
+};
+const opcionesProducto = (event) => {
+  // target es el COMPONENTE donde he hecho CLICK o lo que sea
+  const indice = Number(event.target.dataset.id); // cuando pulso click obtengo el componente
+  if (event.target.classList.contains("btn-borrar")) {
+    carrito.borrarProducto(indice);
+    pintarCarrito();
+  }
+  if (event.target.classList.contains("btn-editar")) {
+    const newCantidad = prompt(
+      "Introduzca una nueva cantidad",
+      carrito.productos[indice].cantidad
+    );
+    if (newCantidad && Number(newCantidad > 0)) {
+      carrito.editarProducto(indice, Number(newCantidad));
       pintarCarrito();
     }
-    if (event.target.classList.contains("btn-borrar")) {
-      alert("Voy a editar");
-    }
-  };
+  }
+};
+function pintarInterfazWeb() {
+  const app = document.getElementById("app");
 
   app.innerHTML = `
     <h1>Carrito de la compra de productos</h1>
